@@ -1,8 +1,8 @@
 class SudokuSolverController < ApplicationController
     
     def solve
-    puzzle = params[:puzzle]
-    solved_puzzle = solve_sudoku(puzzle)
+    unsolved_puzzle = params[:puzzle]
+    solved_puzzle = solve_sudoku(unsolved_puzzle)
     render json: {
         message: "Given Sudoku--Puzzle solved successfully",
         solved_puzzle: [solved_puzzle]}
