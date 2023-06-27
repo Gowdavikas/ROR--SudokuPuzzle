@@ -1,16 +1,22 @@
 class SudokuSolverController < ApplicationController
     
     def solve
-    unsolved_puzzle = params[:puzzle]
-    solved_puzzle = solve_sudoku(unsolved_puzzle)
-    render json: {
-        message: "Given Sudoku--Puzzle solved successfully",
-        solved_puzzle: [solved_puzzle]}
-  end
+      unsolved_puzzle = params[:puzzle]
+      solved_puzzle = solve_sudoku(unsolved_puzzle)
+      puts solved_puzzle = solved_puzzle.to_json
 
-  private
+      if solved_puzzle.nil?
+        render json: { error: 'Invalid puzzle' }, status: :unprocessable_entity
+      else
+        render json: {
+          message: 'Given Sudoku puzzle solved successfully',
+          solved_puzzle: solved_puzzle
+        }
+      end
+    end
+  
   def solve_sudoku(puzzle)
-  solve_recursive(puzzle)
+  solve_recursive(puzzle.map { |row| row.map(&:to_i) })
 end
 
 def solve_recursive(puzzle)
@@ -67,5 +73,4 @@ def box_contains?(puzzle, start_row, start_col, num)
   end
   false
 end
-
 end
